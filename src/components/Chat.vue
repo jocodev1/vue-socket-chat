@@ -1,52 +1,58 @@
 <template>
-  <div class="hello">
+  <div class="chat">
     <p>MY USERNAME: <i>{{ username }}</i></p>
     <div class="chat-window">
       <p v-for="message in messages">
         <b>{{ message.username }}</b> <span class="gray-out"><i>('Dec 09 2016 00:00:00')</i></span>: &nbsp; {{ message.msg }}
       </p>
     </div>
-    
-    <p><input type="text" v-model="newMsg"/></p>
+    <p>
+      <input type="text" v-model="newMsg"/>
+    </p>
     <button type="button" v-on:click="send()">Send</button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'hello',
+  name: 'chat',
   data () {
     return {
       messages: [],
       newMsg: null,
-      username: null,
-      size: {
-        width: '100px',
-        height: '100px'
-      }
+      username: null
     }
   },
   sockets: {
-    updateMsg (data) {
-      this.messages.push(data)
-    },
     getMyUsername (username) {
       this.username = username
     },
     resetChat () {
       this.messages = []
+    },
+    updateMsg (data) {
+      this.messages.push(data)
     }
   },
   methods: {
-    send (val) {
-      this.$socket.emit('send', {
-        username: this.username,
-        msg: (val !== undefined) ? val : this.newMsg
-      })
-      this.resetNewMsg()
-    },
+    /**
+     * Resets new message in text input
+     * @return void
+     */
     resetNewMsg () {
       this.newMsg = null
+    },
+
+    /**
+     * Sends new message through socket
+     * @return void
+     */
+    send () {
+      this.$socket.emit('send', {
+        username: this.username,
+        msg: this.newMsg
+      })
+      this.resetNewMsg()
     }
   }
 }

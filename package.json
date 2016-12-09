@@ -1,7 +1,7 @@
 {
-  "name": "vue-sockets",
+  "name": "vue-socket-chat",
   "version": "1.0.0",
-  "description": "Learning about sockets",
+  "description": "Basic socket chat using Vue JS",
   "author": "Collier Devlin",
   "private": true,
   "scripts": {
